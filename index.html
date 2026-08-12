@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HackVengers Facility Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep: #0B4F52;
+    --teal: #0E7C7B;
+    --aqua: #17B8AE;
+    --aqua-bright: #2DD4C8;
+    --mist: #EAFBF9;
+    --paper: #F5FDFC;
+    --ink: #0A2E2F;
+    --ink-soft: #4B6B6C;
+    --line: #D3EEEB;
+    --amber: #F2A65A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .noise-bg{
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(23,184,174,0.10), transparent 45%),
+      radial-gradient(circle at 90% 0%, rgba(11,79,82,0.08), transparent 40%);
+  }
+
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 5vw;
+    background: var(--deep);
+  }
+  .logo{ display:flex; align-items:center; gap:12px; }
+  .logo-mark{
+    width:36px; height:36px; border-radius:10px;
+    background: linear-gradient(135deg, var(--aqua-bright), var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk'; font-weight:700; color:var(--deep); font-size:16px;
+  }
+  .logo-text{ color:#fff; line-height:1.1; }
+  .logo-text .main{ font-family:'Space Grotesk'; font-weight:700; font-size:16px; letter-spacing:0.2px;}
+  .logo-text .sub{ font-size:10.5px; letter-spacing:2.5px; color: var(--aqua-bright); text-transform:uppercase; margin-top:2px;}
+  .switch-btn{
+    border:1px solid rgba(255,255,255,0.25);
+    color:#fff; background:transparent;
+    padding:9px 18px; border-radius:999px;
+    font-size:12.5px; font-weight:600; letter-spacing:0.5px;
+    cursor:pointer; transition: all .2s ease;
+  }
+  .switch-btn:hover{ background: rgba(255,255,255,0.1); border-color: var(--aqua-bright); }
+
+  .status-strip{
+    background: var(--mist);
+    border-bottom: 1px solid var(--line);
+    text-align:center;
+    font-family:'JetBrains Mono'; font-size:11px; letter-spacing:1.5px;
+    color: var(--teal); font-weight:600;
+    padding: 7px 0;
+    text-transform: uppercase;
+  }
+  .status-strip .dot{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    background: var(--aqua-bright); margin-right:8px;
+    box-shadow: 0 0 0 3px rgba(45,212,200,0.25);
+  }
+
+  header.hero{
+    padding: 80px 5vw 40px;
+    text-align:center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1{
+    font-family:'Space Grotesk';
+    font-weight:700;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+  }
+  h1 .accent{ color: var(--teal); }
+  .subhead{
+    max-width: 620px;
+    margin: 22px auto 0;
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .ring-wrap{
+    display:flex; justify-content:center;
+    margin: 46px 0 8px;
+  }
+  .ring-card{
+    background:#fff;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 22px 34px;
+    display:flex; align-items:center; gap:22px;
+    box-shadow: 0 10px 30px -12px rgba(11,79,82,0.18);
+  }
+  .ring{ position:relative; width:96px; height:96px; }
+  .ring svg{ transform: rotate(-90deg); }
+  .ring-pct{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono'; font-weight:700; font-size:19px; color: var(--deep);
+  }
+  .ring-label{ text-align:left; }
+  .ring-label .big{ font-family:'Space Grotesk'; font-weight:600; font-size:15px; color:var(--ink);}
+  .ring-label .small{ font-size:12.5px; color:var(--ink-soft); margin-top:3px; max-width:180px;}
+
+  .portals{
+    max-width: 1100px;
+    margin: 56px auto 0;
+    padding: 0 5vw 90px;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  .portal-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 24px;
+    text-align:left;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    position:relative;
+    overflow:hidden;
+    cursor: pointer;
+  }
+  .portal-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -16px rgba(11,79,82,0.22);
+    border-color: var(--aqua);
+  }
+  .portal-card:focus-visible{
+    outline: 2px solid var(--aqua);
+    outline-offset: 3px;
+  }
+  .portal-card .icon{
+    width:42px; height:42px; border-radius:11px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px; margin-bottom:18px;
+  }
+  .icon.users{ background: #E4F6F5; color: var(--teal); }
+  .icon.staff{ background: #FDEFDF; color: var(--amber); }
+  .icon.admin{ background: #E9EEFB; color: #5468C9; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono';
+    font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--ink-soft); font-weight:600; margin-bottom:10px;
+  }
+  .portal-card h3{
+    font-family:'Space Grotesk'; font-size:19px; font-weight:600; margin-bottom:9px;
+  }
+  .portal-card p{
+    font-size: 13.5px; line-height:1.55; color: var(--ink-soft); margin-bottom: 20px;
+  }
+  .enter-link{
+    font-size: 13px; font-weight:700; color: var(--teal);
+    display:inline-flex; align-items:center; gap:6px;
+    text-decoration:none; letter-spacing:0.2px;
+  }
+  .enter-link .arrow{ transition: transform .18s ease; }
+  .portal-card:hover .arrow{ transform: translateX(4px); }
+
+  footer{
+    text-align:center;
+    padding: 24px 5vw 40px;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3px;
+  }
+
+  @media (max-width: 760px){
+    .portals{ grid-template-columns: 1fr; }
+    .ring-card{ flex-direction:column; text-align:center; }
+    .ring-label{ text-align:center; }
+  }
+</style>
+</head>
+<body class="noise-bg">
+
+  <nav>
+    <div class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">
+        <div class="main">HackVengers</div>
+        <div class="sub">Facility Care</div>
+      </div>
+    </div>
+    <button class="switch-btn" onclick="window.location.href='index.html'">Home</button>
+  </nav>
+
+  <div class="status-strip"><span class="dot"></span>Work Order System — Live Status</div>
+
+  <header class="hero">
+    <h1>Report it once.<br><span class="accent">Track it through.</span></h1>
+    <p class="subhead">HackVengers Facility Care routes every maintenance issue — plumbing, electrical, IT, structural — from the moment it's spotted to the moment it's fixed.</p>
+
+    <div class="ring-wrap">
+      <div class="ring-card">
+        <div class="ring">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="42" fill="none" stroke="#E4F6F5" stroke-width="8"/>
+            <circle cx="48" cy="48" r="42" fill="none" stroke="url(#grad)" stroke-width="8"
+                    stroke-dasharray="264" stroke-dashoffset="74" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#2DD4C8"/>
+                <stop offset="100%" stop-color="#0E7C7B"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="ring-pct">72%</div>
+        </div>
+        <div class="ring-label">
+          <div class="big">Resolved this month</div>
+          <div class="small">Across all facility categories, updated live from work-order data.</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="portals">
+    <div class="portal-card" data-portal="user.html" tabindex="0" role="link" aria-label="Enter Users portal">
+      <div class="icon users">👤</div>
+      <div class="eyebrow">Panel 01 — Reporters</div>
+      <h3>Users</h3>
+      <p>Log in or continue as a guest to report an issue, upload a photo, and track it to resolution.</p>
+      <a class="enter-link" href="user.html">Enter portal <span class="arrow">→</span></a>
+    </div>
+
+    <div class="portal-card" data-portal="staff.html" tabindex="0" role="link" aria-label="Enter Maintenance Staff portal">
+      <div class="icon staff">🛠️</div>
+      <div class="eyebrow">Panel 02 — Response Team</div>
+      <h3>Maintenance Staff</h3>
+      <p>View your assigned work orders, check status by queue, and update tickets as work progresses.</p>
+      <a class="enter-link" href="staff.html">Enter portal <span class="arrow">→</span></a>
+    </div>
+
+    <div class="portal-card" data-portal="admin.html" tabindex="0" role="link" aria-label="Enter Admin portal">
+      <div class="icon admin">📊</div>
+      <div class="eyebrow">Panel 03 — Oversight</div>
+      <h3>Admin</h3>
+      <p>Monitor analytics dashboards, the full complaints table, and generate reports across the facility.</p>
+      <a class="enter-link" href="admin.html">Enter portal <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <footer>Prototype build — HackVengers Facility Care. Demo data, not connected to a live database.</footer>
+  <script src="script.js"></script>
+</body>
+</html>

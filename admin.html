@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — HackVengers Facility Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep: #0B4F52; --teal: #0E7C7B; --aqua: #17B8AE; --aqua-bright: #2DD4C8;
+    --mist: #EAFBF9; --paper: #F5FDFC; --ink: #0A2E2F; --ink-soft: #4B6B6C;
+    --line: #D3EEEB; --amber: #F2A65A; --indigo:#5468C9;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ font-family:'Inter', sans-serif; background: var(--paper); color: var(--ink); -webkit-font-smoothing:antialiased; }
+
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 5vw; background: var(--deep); }
+  .logo{ display:flex; align-items:center; gap:12px; }
+  .logo-mark{ width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--aqua-bright),var(--teal)); display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk'; font-weight:700; color:var(--deep); font-size:16px; }
+  .logo-text{ color:#fff; line-height:1.1; }
+  .logo-text .main{ font-family:'Space Grotesk'; font-weight:700; font-size:16px; }
+  .logo-text .sub{ font-size:10.5px; letter-spacing:2.5px; color:var(--aqua-bright); text-transform:uppercase; margin-top:2px;}
+  .switch-btn{ border:1px solid rgba(255,255,255,0.25); color:#fff; background:transparent; padding:9px 18px; border-radius:999px; font-size:12.5px; font-weight:600; letter-spacing:0.5px; cursor:pointer; transition:all .2s ease; }
+  .switch-btn:hover{ background:rgba(255,255,255,0.1); border-color:var(--aqua-bright); }
+
+  .status-strip{ background: var(--mist); border-bottom:1px solid var(--line); text-align:center; font-family:'JetBrains Mono'; font-size:11px; letter-spacing:1.5px; color: var(--teal); font-weight:600; padding:7px 0; text-transform:uppercase; }
+  .status-strip .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--aqua-bright); margin-right:8px; box-shadow:0 0 0 3px rgba(45,212,200,0.25); }
+
+  .page-head{ padding:52px 5vw 8px; max-width:1200px; margin:0 auto; }
+  .eyebrow{ font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--indigo); font-weight:600; margin-bottom:10px; }
+  h1{ font-family:'Space Grotesk'; font-weight:700; font-size:clamp(28px,4vw,40px); letter-spacing:-0.5px; }
+  .page-sub{ max-width:560px; margin-top:12px; font-size:15px; line-height:1.6; color:var(--ink-soft); }
+
+  .kpi-row{ max-width:1200px; margin:34px auto 0; padding:0 5vw; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  @media (max-width:860px){ .kpi-row{ grid-template-columns:repeat(2,1fr);} }
+  .kpi{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px 20px; }
+  .kpi .kpi-num{ font-family:'JetBrains Mono'; font-weight:700; font-size:26px; color:var(--deep); }
+  .kpi .kpi-lbl{ font-size:12px; color:var(--ink-soft); margin-top:4px; }
+  .kpi .kpi-delta{ font-size:11px; font-weight:700; margin-top:8px; display:inline-block; padding:3px 9px; border-radius:999px; }
+  .kpi-delta.up{ background:#E4F6F5; color:var(--teal); }
+  .kpi-delta.down{ background:#FBE7E4; color:#C24B3A; }
+
+  .section{ max-width:1200px; margin:40px auto 0; padding:0 5vw; }
+  .section-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+  .section-head h2{ font-family:'Space Grotesk'; font-size:19px; font-weight:600; }
+
+  select#admin-category-filter{
+    border:1px solid var(--line); border-radius:9px; padding:9px 12px; font-family:'Inter'; font-size:12.5px;
+    background:#fff; color:var(--ink); cursor:pointer;
+  }
+
+  table{ width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  thead th{
+    text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:0.6px; color:var(--ink-soft);
+    background:var(--mist); padding:12px 16px; font-weight:700;
+  }
+  tbody td{ padding:13px 16px; font-size:13px; border-top:1px solid var(--line); }
+  tbody tr:hover{ background: var(--mist); }
+  .cat-chip{ font-size:10.5px; font-weight:700; text-transform:uppercase; padding:3px 9px; border-radius:6px; }
+  .cat-plumbing{ background:#E4F6F5; color:var(--teal); }
+  .cat-electrical{ background:#FDEFDF; color:var(--amber); }
+  .cat-it{ background:#E9EEFB; color:var(--indigo); }
+  .cat-structural{ background:#FBE7E4; color:#C24B3A; }
+  .pill{ font-family:'JetBrains Mono'; font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:999px; text-transform:uppercase; }
+  .pill-open{ background:#FDEFDF; color:var(--amber); }
+  .pill-progress{ background:#E9EEFB; color:var(--indigo); }
+  .pill-resolved{ background:#E4F6F5; color:var(--teal); }
+
+  .report-card{
+    margin-top:44px; background:#fff; border:1px solid var(--line); border-radius:18px;
+    padding:26px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  }
+  .report-card h3{ font-family:'Space Grotesk'; font-size:16px; font-weight:600; margin-bottom:6px; }
+  .report-card p{ font-size:12.5px; color:var(--ink-soft); max-width:440px; }
+  .report-btn{
+    background:var(--deep); color:#fff; border:none; padding:12px 22px; border-radius:10px;
+    font-family:'Space Grotesk'; font-weight:600; font-size:13.5px; cursor:pointer; transition:background .15s ease; white-space:nowrap;
+  }
+  .report-btn:hover{ background:var(--teal); }
+  .report-note{ width:100%; margin-top:14px; font-size:12px; color:var(--teal); font-weight:600; opacity:0; height:0; overflow:hidden; transition:opacity .2s ease; }
+  .report-note.show{ opacity:1; height:auto; }
+
+  footer{ text-align:center; padding:30px 5vw 40px; font-size:11.5px; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text"><div class="main">HackVengers</div><div class="sub">Facility Care</div></div>
+    </div>
+    <button class="switch-btn" onclick="window.location.href='index.html'">← All portals</button>
+  </nav>
+
+  <div class="status-strip"><span class="dot"></span>Admin Portal — Facility Oversight</div>
+
+  <div class="page-head">
+    <div class="eyebrow">Panel 03 — Oversight</div>
+    <h1>Facility-wide overview</h1>
+    <p class="page-sub">Every ticket, every category, one view. Filter the table below or generate a snapshot report for the current period.</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-num">86</div>
+      <div class="kpi-lbl">Open tickets, all blocks</div>
+      <span class="kpi-delta down">▼ 12% vs last month</span>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">72%</div>
+      <div class="kpi-lbl">Resolved this month</div>
+      <span class="kpi-delta up">▲ 5 pts</span>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">1.8d</div>
+      <div class="kpi-lbl">Avg. time to first response</div>
+      <span class="kpi-delta up">▲ faster</span>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">9</div>
+      <div class="kpi-lbl">Active maintenance staff</div>
+      <span class="kpi-delta up">Fully staffed</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>All complaints</h2>
+      <select id="admin-category-filter">
+        <option value="all">All categories</option>
+        <option value="plumbing">Plumbing</option>
+        <option value="electrical">Electrical</option>
+        <option value="it">IT / Network</option>
+        <option value="structural">Structural</option>
+      </select>
+    </div>
+
+    <table id="complaints-table">
+      <thead>
+        <tr><th>Ticket</th><th>Category</th><th>Location</th><th>Reported by</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr data-category="electrical">
+          <td>#HV-247</td>
+          <td><span class="cat-chip cat-electrical">Electrical</span></td>
+          <td>Block A, Room 108</td>
+          <td>Guest report</td>
+          <td><span class="pill pill-progress">In progress</span></td>
+        </tr>
+        <tr data-category="plumbing">
+          <td>#HV-241</td>
+          <td><span class="cat-chip cat-plumbing">Plumbing</span></td>
+          <td>Block B, Ground floor</td>
+          <td>R. Mehta</td>
+          <td><span class="pill pill-resolved">Resolved</span></td>
+        </tr>
+        <tr data-category="it">
+          <td>#HV-233</td>
+          <td><span class="cat-chip cat-it">IT / Network</span></td>
+          <td>Library, Wing 2</td>
+          <td>Guest report</td>
+          <td><span class="pill pill-open">Open</span></td>
+        </tr>
+        <tr data-category="structural">
+          <td>#HV-219</td>
+          <td><span class="cat-chip cat-structural">Structural</span></td>
+          <td>Block C, 2nd floor hallway</td>
+          <td>S. Iyer</td>
+          <td><span class="pill pill-open">Open</span></td>
+        </tr>
+        <tr data-category="electrical">
+          <td>#HV-211</td>
+          <td><span class="cat-chip cat-electrical">Electrical</span></td>
+          <td>Block D, Electronics Lab 3</td>
+          <td>K. Fernandes</td>
+          <td><span class="pill pill-resolved">Resolved</span></td>
+        </tr>
+        <tr data-category="plumbing">
+          <td>#HV-204</td>
+          <td><span class="cat-chip cat-plumbing">Plumbing</span></td>
+          <td>Block A, 4th floor washrooms</td>
+          <td>Guest report</td>
+          <td><span class="pill pill-progress">In progress</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="report-card">
+      <div>
+        <h3>Generate a report</h3>
+        <p>Export the current filtered view as a shareable snapshot for facility meetings or board updates.</p>
+        <div class="report-note" id="report-note"></div>
+      </div>
+      <button class="report-btn" id="generate-report">Generate report</button>
+    </div>
+  </div>
+
+  <footer>Prototype build — HackVengers Facility Care. Demo data, not connected to a live database.</footer>
+  <script src="script.js"></script>
+</body>
+</html>

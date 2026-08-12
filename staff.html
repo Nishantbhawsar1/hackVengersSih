@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maintenance Staff — HackVengers Facility Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep: #0B4F52; --teal: #0E7C7B; --aqua: #17B8AE; --aqua-bright: #2DD4C8;
+    --mist: #EAFBF9; --paper: #F5FDFC; --ink: #0A2E2F; --ink-soft: #4B6B6C;
+    --line: #D3EEEB; --amber: #F2A65A; --indigo:#5468C9;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ font-family:'Inter', sans-serif; background: var(--paper); color: var(--ink); -webkit-font-smoothing:antialiased; }
+
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 5vw; background: var(--deep); }
+  .logo{ display:flex; align-items:center; gap:12px; }
+  .logo-mark{ width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--aqua-bright),var(--teal)); display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk'; font-weight:700; color:var(--deep); font-size:16px; }
+  .logo-text{ color:#fff; line-height:1.1; }
+  .logo-text .main{ font-family:'Space Grotesk'; font-weight:700; font-size:16px; }
+  .logo-text .sub{ font-size:10.5px; letter-spacing:2.5px; color:var(--aqua-bright); text-transform:uppercase; margin-top:2px;}
+  .switch-btn{ border:1px solid rgba(255,255,255,0.25); color:#fff; background:transparent; padding:9px 18px; border-radius:999px; font-size:12.5px; font-weight:600; letter-spacing:0.5px; cursor:pointer; transition:all .2s ease; }
+  .switch-btn:hover{ background:rgba(255,255,255,0.1); border-color:var(--aqua-bright); }
+
+  .status-strip{ background: var(--mist); border-bottom:1px solid var(--line); text-align:center; font-family:'JetBrains Mono'; font-size:11px; letter-spacing:1.5px; color: var(--teal); font-weight:600; padding:7px 0; text-transform:uppercase; }
+  .status-strip .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--aqua-bright); margin-right:8px; box-shadow:0 0 0 3px rgba(45,212,200,0.25); }
+
+  .page-head{ padding:52px 5vw 8px; max-width:1200px; margin:0 auto; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  .eyebrow{ font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--amber); font-weight:600; margin-bottom:10px; }
+  h1{ font-family:'Space Grotesk'; font-weight:700; font-size:clamp(28px,4vw,40px); letter-spacing:-0.5px; }
+  .page-sub{ max-width:520px; margin-top:12px; font-size:15px; line-height:1.6; color:var(--ink-soft); }
+
+  .stat-row{ display:flex; gap:14px; }
+  .stat{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 18px; text-align:center; min-width:96px; }
+  .stat .num{ font-family:'JetBrains Mono'; font-weight:700; font-size:20px; color:var(--deep); }
+  .stat .lbl{ font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.8px; margin-top:3px; }
+
+  .filters{ max-width:1200px; margin:30px auto 0; padding:0 5vw; display:flex; gap:10px; flex-wrap:wrap; }
+  .queue-filter{
+    border:1px solid var(--line); background:#fff; color:var(--ink-soft); font-size:12.5px; font-weight:600;
+    padding:9px 16px; border-radius:999px; cursor:pointer; transition:all .15s ease; font-family:'Inter';
+  }
+  .queue-filter.active, .queue-filter:hover{ background:var(--teal); border-color:var(--teal); color:#fff; }
+
+  .queue{ max-width:1200px; margin:20px auto 90px; padding:0 5vw; display:flex; flex-direction:column; gap:12px; }
+  .work-order{
+    background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px 22px;
+    display:grid; grid-template-columns: 90px 1.4fr 1fr 130px 140px; align-items:center; gap:16px;
+  }
+  @media (max-width: 900px){ .work-order{ grid-template-columns:1fr; text-align:left; } }
+
+  .wo-id{ font-family:'JetBrains Mono'; font-weight:700; color:var(--deep); font-size:13px; }
+  .wo-desc .cat-tag{
+    display:inline-block; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+    padding:3px 9px; border-radius:6px; margin-bottom:6px;
+  }
+  .cat-plumbing{ background:#E4F6F5; color:var(--teal); }
+  .cat-electrical{ background:#FDEFDF; color:var(--amber); }
+  .cat-it{ background:#E9EEFB; color:var(--indigo); }
+  .cat-structural{ background:#FBE7E4; color:#C24B3A; }
+  .wo-desc .desc-text{ font-size:13.5px; font-weight:600; }
+  .wo-loc{ font-size:12px; color:var(--ink-soft); }
+
+  .status-pill{
+    font-family:'JetBrains Mono'; font-size:10.5px; font-weight:700; text-transform:uppercase;
+    padding:6px 12px; border-radius:999px; text-align:center; letter-spacing:0.3px;
+  }
+  .status-queued{ background:#FDEFDF; color:var(--amber); }
+  .status-in-progress{ background:#E9EEFB; color:var(--indigo); }
+  .status-awaiting-parts{ background:#FBE7E4; color:#C24B3A; }
+  .status-resolved{ background:#E4F6F5; color:var(--teal); }
+
+  .status-btn{
+    background:var(--deep); color:#fff; border:none; border-radius:9px; padding:9px 14px;
+    font-size:11.5px; font-weight:600; cursor:pointer; font-family:'Inter'; transition:background .15s ease;
+  }
+  .status-btn:hover{ background:var(--teal); }
+
+  footer{ text-align:center; padding:24px 5vw 40px; font-size:11.5px; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text"><div class="main">HackVengers</div><div class="sub">Facility Care</div></div>
+    </div>
+    <button class="switch-btn" onclick="window.location.href='index.html'">← All portals</button>
+  </nav>
+
+  <div class="status-strip"><span class="dot"></span>Maintenance Staff Portal — Work Order Queue</div>
+
+  <div class="page-head">
+    <div>
+      <div class="eyebrow">Panel 02 — Response Team</div>
+      <h1>Today's queue</h1>
+      <p class="page-sub">Your assigned work orders, sorted by when they came in. Tap "Advance status" as you move each one along.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="num">6</div><div class="lbl">Assigned</div></div>
+      <div class="stat"><div class="num">2</div><div class="lbl">Urgent</div></div>
+      <div class="stat"><div class="num">14</div><div class="lbl">Closed / mo</div></div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="queue-filter active" data-filter="all">All</button>
+    <button class="queue-filter" data-filter="plumbing">Plumbing</button>
+    <button class="queue-filter" data-filter="electrical">Electrical</button>
+    <button class="queue-filter" data-filter="it">IT / Network</button>
+    <button class="queue-filter" data-filter="structural">Structural</button>
+  </div>
+
+  <div class="queue">
+
+    <div class="work-order" data-category="plumbing">
+      <div class="wo-id">#HV-233</div>
+      <div class="wo-desc">
+        <span class="cat-tag cat-plumbing">Plumbing</span>
+        <div class="desc-text">Leaking pipe under sink</div>
+      </div>
+      <div class="wo-loc">Block B · Ground floor washroom</div>
+      <div class="status-pill status-queued">Queued</div>
+      <button class="status-btn">Advance status →</button>
+    </div>
+
+    <div class="work-order" data-category="electrical">
+      <div class="wo-id">#HV-247</div>
+      <div class="wo-desc">
+        <span class="cat-tag cat-electrical">Electrical</span>
+        <div class="desc-text">Flickering corridor lights</div>
+      </div>
+      <div class="wo-loc">Block A · Room 108 corridor</div>
+      <div class="status-pill status-in-progress">In progress</div>
+      <button class="status-btn">Advance status →</button>
+    </div>
+
+    <div class="work-order" data-category="it">
+      <div class="wo-id">#HV-233</div>
+      <div class="wo-desc">
+        <span class="cat-tag cat-it">IT / Network</span>
+        <div class="desc-text">Wi-Fi dead zone near reading room</div>
+      </div>
+      <div class="wo-loc">Library · Wing 2</div>
+      <div class="status-pill status-queued">Queued</div>
+      <button class="status-btn">Advance status →</button>
+    </div>
+
+    <div class="work-order" data-category="structural">
+      <div class="wo-id">#HV-219</div>
+      <div class="wo-desc">
+        <span class="cat-tag cat-structural">Structural</span>
+        <div class="desc-text">Ceiling tile water stain, possible leak above</div>
+      </div>
+      <div class="wo-loc">Block C · 2nd floor hallway</div>
+      <div class="status-pill status-awaiting-parts">Awaiting parts</div>
+      <button class="status-btn">Advance status →</button>
+    </div>
+
+    <div class="work-order" data-category="electrical">
+      <div class="wo-id">#HV-211</div>
+      <div class="wo-desc">
+        <span class="cat-tag cat-electrical">Electrical</span>
+        <div class="desc-text">Socket not working in lab</div>
+      </div>
+      <div class="wo-loc">Block D · Electronics Lab 3</div>
+      <div class="status-pill status-resolved">Resolved</div>
+      <button class="status-btn">Advance status →</button>
+    </div>
+
+    <div class="work-order" data-category="plumbing">
+      <div class="wo-id">#HV-204</div>
+      <div class="wo-desc">
+        <span class="cat-tag cat-plumbing">Plumbing</span>
+        <div class="desc-text">Low water pressure, top floor</div>
+      </div>
+      <div class="wo-loc">Block A · 4th floor washrooms</div>
+      <div class="status-pill status-in-progress">In progress</div>
+      <button class="status-btn">Advance status →</button>
+    </div>
+
+  </div>
+
+  <footer>Prototype build — HackVengers Facility Care. Demo data, not connected to a live database.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
