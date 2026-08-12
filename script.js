@@ -1,5 +1,5 @@
 /* ============================================================
-   Nivaran — shared script.js
+   Nivarti — shared script.js
    Handles: portal-card redirection on the landing page, plus
    small interactive behaviors on the user / staff / admin pages.
    ============================================================ */
